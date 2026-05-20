@@ -1,0 +1,238 @@
+:root {
+  --font-family-sans:
+    Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-monospace:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  --brand-identity-green: #61c6a2;
+  --brand-dark-green: #06262d;
+  --brand-logo-text-green: #00b189;
+  --brand-light-green: #cff4d8;
+  --brand-extra-light-green: #e7faeb;
+  --brand-aleido-blue: #3c6ed2;
+
+  --background: #f3f6f4;
+  --surface: #ffffff;
+  --surface-muted: #f8fbf9;
+  --foreground: #06262d;
+  --muted-foreground: #4c5f5b;
+  --border: #d5e1dc;
+  --ring: rgb(60 110 210 / 0.35);
+  --shadow-lg: 0 24px 60px -28px rgb(6 38 45 / 0.24);
+
+  font-family: var(--font-family-sans);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--foreground);
+  background:
+    radial-gradient(
+      circle at top,
+      var(--brand-extra-light-green) 0,
+      #f7faf8 24rem,
+      #eef3f1 100%
+    );
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--foreground);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.assignment-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 24px 88px;
+}
+
+.hero-panel,
+.brief-panel {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-panel {
+  display: grid;
+  gap: 24px;
+  padding: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--brand-logo-text-green);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-panel h1,
+.brief-panel h2,
+.brief-card h3 {
+  margin: 0;
+  color: var(--brand-dark-green);
+}
+
+.hero-panel h1 {
+  max-width: 12ch;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.lead,
+.brief-panel p,
+.brief-panel li {
+  color: var(--muted-foreground);
+}
+
+.lead {
+  max-width: 72ch;
+  margin-top: 16px;
+  font-size: 1.125rem;
+}
+
+.resource-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.resource-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--brand-extra-light-green);
+  color: var(--brand-dark-green);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.resource-links a:hover {
+  border-color: var(--brand-identity-green);
+  background: var(--brand-light-green);
+  transform: translateY(-1px);
+}
+
+.brief-panel {
+  margin-top: 24px;
+  padding: 28px;
+}
+
+.brief-panel-heading {
+  margin-bottom: 24px;
+}
+
+.brief-panel-heading p {
+  margin-top: 8px;
+}
+
+.brief-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.brief-card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface-muted);
+}
+
+.brief-card h3 {
+  margin-bottom: 8px;
+}
+
+.brief-card p,
+.brief-panel ul {
+  margin: 0;
+}
+
+.brief-panel-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.brief-panel ul {
+  padding-left: 20px;
+}
+
+.brief-panel li + li {
+  margin-top: 10px;
+}
+
+.brief-note {
+  margin-top: 24px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--brand-logo-text-green);
+  border-radius: 14px;
+  background: var(--brand-extra-light-green);
+  color: var(--brand-dark-green);
+}
+
+.brief-note code {
+  font-family: var(--font-family-monospace);
+}
+
+@media (max-width: 640px) {
+  .assignment-page {
+    padding: 32px 16px 48px;
+  }
+
+  .hero-panel,
+  .brief-panel {
+    border-radius: 20px;
+  }
+
+  .hero-panel,
+  .brief-panel {
+    padding: 20px;
+  }
+}
