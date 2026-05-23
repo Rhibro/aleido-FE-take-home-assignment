@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { searchProducts, Product, ProductsResponse } from "@/lib/api";
 import { ProductCard } from "@/components/shared/ProductCard";
@@ -7,15 +7,24 @@ import { ErrorMessage } from "@/components/shared/ErrorMessage";
 
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get("q") || "";
-  const [searchInput, setSearchInput] = useState(query);
+  const [searchInput, setSearchInput] = useState(() => searchParams.get("q") ?? "");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const performSearch = useCallback(
-    async (searchQuery: string) => {
-      if (!searchQuery.trim()) {
+  // Sync input value to URL, debounced
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchParams({ q: searchInput }, { replace: true });
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchInput, setSearchParams]);
+
+  // Fire search when input settles, debounced
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (!searchInput.trim()) {
         setProducts([]);
         return;
       }
@@ -23,7 +32,7 @@ export default function SearchPage() {
       try {
         setLoading(true);
         setError(null);
-        const data: ProductsResponse = await searchProducts(searchQuery, 12);
+        const data: ProductsResponse = await searchProducts(searchInput, 12);
         setProducts(data.products);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to search products");
@@ -31,21 +40,10 @@ export default function SearchPage() {
       } finally {
         setLoading(false);
       }
-    },
-    []
-  );
-
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (searchInput !== query) {
-        setSearchParams({ q: searchInput }, { replace: true });
-      }
-      performSearch(searchInput);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [searchInput, query, setSearchParams, performSearch]);
+  }, [searchInput]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

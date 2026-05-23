@@ -1,13 +1,6 @@
 import { create } from "zustand";
-
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  thumbnail: string;
-  description: string;
-  [key: string]: unknown;
-}
+import { persist } from "zustand/middleware";
+import type { Product } from "@/lib/api";
 
 export interface CartItem {
   product: Product;
@@ -24,7 +17,9 @@ interface CartStore {
   getItemCount: () => number;
 }
 
-export const useCartStore = create<CartStore>((set, get) => ({
+export const useCartStore = create<CartStore>()(
+  persist(
+    (set, get) => ({
   items: [],
 
   addItem: (product, quantity = 1) => {
@@ -84,4 +79,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
     const state = get();
     return state.items.reduce((count, item) => count + item.quantity, 0);
   },
-}));
+    }),
+    {
+      name: "cart",
+      partialize: (state) => ({ items: state.items }),
+    }
+  )
+);
