@@ -34,9 +34,10 @@ export async function fetchProductById(id: number): Promise<Product> {
 
 export async function searchProducts(
   query: string,
-  limit = 12
+  limit = 12,
+  skip = 0
 ): Promise<ProductsResponse> {
-  const response = await fetch(`${API_BASE}/products/search?q=${query}&limit=${limit}`);
+  const response = await fetch(`${API_BASE}/products/search?q=${query}&limit=${limit}&skip=${skip}`);
   if (!response.ok) throw new Error("Failed to search products");
   return response.json();
 }

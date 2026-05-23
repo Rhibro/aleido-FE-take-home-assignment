@@ -84,7 +84,9 @@ I didn't reach for React Query. The data requirements are simple: fetch on mount
 
 ### Pagination
 
-The home page fetches 12 products at a time using DummyJSON's `limit` and `skip` parameters. The API response includes a `total` count, which is used to calculate the total number of pages (`Math.ceil(total / limit)`). A windowed page number component shows up to 7 buttons at a time with ellipses for large page counts, so the controls stay compact regardless of how many pages there are. The page scrolls to the top on each navigation.
+Both the home page and search results are paginated using DummyJSON's `limit` and `skip` parameters. The API response includes a `total` count, which is used to calculate the number of pages (`Math.ceil(total / limit)`). The pagination UI lives in a shared `Pagination` component so neither page duplicates the logic. It shows up to 7 buttons at a time with ellipses for large page counts, and scrolls to the top on each navigation.
+
+On the search page, pagination resets to page 1 whenever the query changes. This is handled by separating `searchInput` (what the user types) from `committedQuery` (the debounced, settled value that drives fetches). Page changes trigger an immediate fetch; query changes are debounced first, then fetch.
 
 ### Cart persistence — Zustand `persist` middleware
 
@@ -100,14 +102,20 @@ Cart state is persisted to `localStorage` via Zustand's built-in `persist` middl
 
 **Checkout is a placeholder.** The "Proceed to Checkout" button renders but doesn't navigate anywhere. A real next step would be a confirmation modal or a `/checkout` route — I left it as a button rather than removing it because it communicates intent in the UI.
 
+**No quick-add on product cards.** To add an item to the cart, the user must navigate to the product page first. An "Add to cart" button directly on each card would let users build their cart from the browse or search grid without the extra navigation step.
+
+**No cart drawer in the navbar.** Clicking the cart icon navigates to the full cart page. A more fluid pattern would be a small dropdown or slide-out drawer showing the current cart items and a "Go to cart" link — so users can glance at what's in their cart without losing their place on the page.
+
 **No image fallback.** If a product image 404s, the browser renders a broken image icon. An `onError` handler on the `<img>` tag could swap in a placeholder.
 
 ---
 
 ## What I'd do with more time
 
-1. **Image error fallbacks** — `onError` swap to a grey placeholder
-2. **Checkout flow** — even a simple order summary modal would complete the user journey
+1. **Quick-add to cart** — an "Add to cart" button on each product card so users can shop from the grid without navigating to the product page
+2. **Cart drawer** — a dropdown from the navbar cart icon showing current items and a "Go to cart" link, so users can check their cart without losing their place
+3. **Image error fallbacks** — `onError` swap to a grey placeholder
+4. **Checkout flow** — even a simple order summary modal would complete the user journey
 
 ---
 
